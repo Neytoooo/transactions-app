@@ -1,12 +1,18 @@
-/* src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Base app */
-:root { color-scheme: light; } /* pas de dark forcé */
-html, body, #root { height: 100%; }
-body { @apply bg-neutral-50 text-neutral-900 antialiased; }
+/* Autoriser les deux thèmes */
+:root { color-scheme: light dark; }
 
-/* (optionnel) Typo */
-h1,h2,h3 { @apply font-semibold text-neutral-900; }
+/* Hauteur pleine page */
+html, body, #root { height: 100%; }
+
+/* Fond + texte globaux, avec variantes dark */
+body {
+  @apply bg-neutral-50 text-neutral-900 antialiased
+         dark:bg-neutral-950 dark:text-neutral-50;
+}
+
+/* (optionnel) titres */
+h1,h2,h3 { @apply font-semibold; }

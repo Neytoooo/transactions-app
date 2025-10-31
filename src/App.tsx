@@ -35,15 +35,11 @@ function App() {
 
   const hasMore = visible < filtered.length;
 
-  // Réinitialise la pagination quand la recherche (debounced) change
-  useEffect(() => {
-    setVisible(6);
-  }, [debouncedQuery]);
+  useEffect(() => { setVisible(6); }, [debouncedQuery]);
 
   const loadMore = useCallback(() => {
     if (loading || !hasMore || error) return;
     setLoading(true);
-    // Simule une latence + erreurs aléatoires légères (8%)
     setTimeout(() => {
       if (Math.random() < 0.08) {
         setError('Network error while loading more transactions.');
@@ -55,15 +51,13 @@ function App() {
     }, 500);
   }, [hasMore, loading, error, filtered.length]);
 
-  const onRetry = () => {
-    setError(null);
-    loadMore();
-  };
+  const onRetry = () => { setError(null); loadMore(); };
 
   const sentinelRef = useInfiniteScroll(loadMore);
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 text-neutral-900
+                    dark:bg-neutral-950 dark:text-neutral-50">
       <Header />
       <main>
         <Hero />
@@ -73,7 +67,11 @@ function App() {
           <div className="mt-4">
             <SearchBar value={query} onChange={setQuery} />
           </div>
-          {error && <div className="mt-4"><ErrorBanner message={error} onRetry={onRetry} /></div>}
+          {error && (
+            <div className="mt-4">
+              <ErrorBanner message={error} onRetry={onRetry} />
+            </div>
+          )}
         </section>
 
         <WeekGroup

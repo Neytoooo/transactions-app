@@ -22,12 +22,15 @@ export default function TransactionCard({ tx, onClick }: { tx: Tx; onClick?: (t:
   return (
     <button
       onClick={() => onClick?.(tx)}
-      className="w-full rounded-xl border border-neutral-200 bg-white p-4 text-left shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       aria-label={`Open details for ${tx.label}`}
+      className="w-full rounded-xl border border-neutral-200 bg-white p-4 text-left shadow-sm
+                 transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500
+                 transition-transform hover:scale-[1.01]
+                 dark:border-neutral-800 dark:bg-neutral-900"
     >
       <div className="flex items-start justify-between">
         <div>
-          <h4 className="font-semibold text-neutral-900">{tx.label}</h4>
+          <h4 className="font-semibold text-neutral-900 dark:text-neutral-100">{tx.label}</h4>
           <p className="text-xs text-neutral-500">
             {tx.from} — {tx.to}
           </p>
@@ -41,3 +44,4 @@ export default function TransactionCard({ tx, onClick }: { tx: Tx; onClick?: (t:
     </button>
   );
 }
+
