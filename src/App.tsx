@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useMemo, useState } from 'react';
+import Header from './components/layout/Header';
+import Hero from './components/layout/Hero';
+import HistoryHeader from './components/transactions/HistoryHeader';
+import SearchBar from './components/transactions/SearchBar';
+import WeekGroup from './components/transactions/WeekGroup';
+import data from './data/transactions.json';
+import type { Tx } from './components/transactions/TransactionCard';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [query, setQuery] = useState('');
+  const list = data as Tx[];
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return list;
+    return list.filter((t) =>
+      [t.label, t.from, t.to, (t.amountCents / 100).toFixed(2)]
+        .join(' ')
+        .toLowerCase()
+        .includes(q)
+    );
+  }, [list, query]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="min-h-screen bg-neutral-50">
+      <Header />
+      <main>
+        <Hero />
+
+        <section className="mx-auto mt-8 w-11/12 max-w-4xl">
+          <HistoryHeader count={filtered.length} />
+          <div className="mt-4">
+            <SearchBar value={query} onChange={setQuery} />
+          </div>
+        </section>
+
+        <WeekGroup items={filtered} />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;

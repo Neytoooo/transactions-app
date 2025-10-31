@@ -1,0 +1,32 @@
+[
+  {
+    "id": "c3d4e5f6-a7b8-9012-cdef-3456789012cd",
+    "label": "Remboursement restaurant",
+    "from": "Pierre Girard",
+    "to": "Julie Lemoine",
+    "date": "2023-08-18T10:24:00.000Z",
+    "amountCents": 6000,
+    "currency": "EUR",
+    "status": "completed"
+  },
+  {
+    "id": "8c2b1a0f-1234-5678-9abc-def012345678",
+    "label": "Courses partagées",
+    "from": "Camille Dupont",
+    "to": "Lucas Bernard",
+    "date": "2023-08-16T18:05:00.000Z",
+    "amountCents": 3299,
+    "currency": "EUR",
+    "status": "pending"
+  },
+  {
+    "id": "aa11bb22-cc33-dd44-ee55-ff6677889900",
+    "label": "Covoiturage",
+    "from": "Henri Martin",
+    "to": "Emma Rousseau",
+    "date": "2023-08-14T07:40:00.000Z",
+    "amountCents": 1200,
+    "currency": "EUR",
+    "status": "completed"
+  }
+]
