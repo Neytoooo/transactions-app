@@ -1,24 +1,29 @@
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import Header from './components/layout/Header';
 import Hero from './components/layout/Hero';
 import HistoryHeader from './components/transactions/HistoryHeader';
 import SearchBar from './components/transactions/SearchBar';
 import WeekGroup from './components/transactions/WeekGroup';
 import TransactionModal from './components/transactions/TransactionModal';
+import ErrorBanner from './components/ErrorBanner';
 import data from './data/transactions.json';
 import type { Tx } from './components/transactions/TransactionCard';
 import { useInfiniteScroll } from './hooks/useInfiniteScroll';
+import { useDebounced } from './hooks/useDebounced';
 
 function App() {
   const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounced(query, 300);
+
   const [selected, setSelected] = useState<Tx | null>(null);
-  const [visible, setVisible] = useState(6);        // taille de page
+  const [visible, setVisible] = useState(6);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const list = data as Tx[];
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     if (!q) return list;
     return list.filter((t) =>
       [t.label, t.from, t.to, (t.amountCents / 100).toFixed(2)]
@@ -26,22 +31,34 @@ function App() {
         .toLowerCase()
         .includes(q)
     );
-  }, [list, query]);
+  }, [list, debouncedQuery]);
 
   const hasMore = visible < filtered.length;
 
-  // Quand la recherche change, on repart de zéro
-  const onSearch = (v: string) => { setQuery(v); setVisible(6); };
+  // Réinitialise la pagination quand la recherche (debounced) change
+  useEffect(() => {
+    setVisible(6);
+  }, [debouncedQuery]);
 
   const loadMore = useCallback(() => {
-    if (loading || !hasMore) return;
+    if (loading || !hasMore || error) return;
     setLoading(true);
-    // on simule une latence pour montrer les squelettes
+    // Simule une latence + erreurs aléatoires légères (8%)
     setTimeout(() => {
+      if (Math.random() < 0.08) {
+        setError('Network error while loading more transactions.');
+        setLoading(false);
+        return;
+      }
       setVisible((n) => Math.min(n + 6, filtered.length));
       setLoading(false);
     }, 500);
-  }, [hasMore, loading, filtered.length]);
+  }, [hasMore, loading, error, filtered.length]);
+
+  const onRetry = () => {
+    setError(null);
+    loadMore();
+  };
 
   const sentinelRef = useInfiniteScroll(loadMore);
 
@@ -54,8 +71,9 @@ function App() {
         <section className="mx-auto mt-8 w-11/12 max-w-4xl">
           <HistoryHeader count={filtered.length} />
           <div className="mt-4">
-            <SearchBar value={query} onChange={onSearch} />
+            <SearchBar value={query} onChange={setQuery} />
           </div>
+          {error && <div className="mt-4"><ErrorBanner message={error} onRetry={onRetry} /></div>}
         </section>
 
         <WeekGroup
