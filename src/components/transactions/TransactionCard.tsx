@@ -18,23 +18,26 @@ function StatusIcon({ s }: { s: Tx['status'] }) {
   return <XCircle className="text-rose-600" size={16} aria-hidden />;
 }
 
-export default function TransactionCard({ tx }: { tx: Tx }) {
+export default function TransactionCard({ tx, onClick }: { tx: Tx; onClick?: (t: Tx) => void }) {
   return (
-    <div
-      role="listitem"
-      className="flex items-start justify-between rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:shadow-md"
+    <button
+      onClick={() => onClick?.(tx)}
+      className="w-full rounded-xl border border-neutral-200 bg-white p-4 text-left shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      aria-label={`Open details for ${tx.label}`}
     >
-      <div>
-        <h4 className="font-semibold text-neutral-900">{tx.label}</h4>
-        <p className="text-xs text-neutral-500">
-          {tx.from} → {tx.to}
-        </p>
-        <p className="mt-1 text-xs text-neutral-500">{formatDate(tx.date)}</p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h4 className="font-semibold text-neutral-900">{tx.label}</h4>
+          <p className="text-xs text-neutral-500">
+            {tx.from} — {tx.to}
+          </p>
+          <p className="mt-1 text-xs text-neutral-500">{formatDate(tx.date)}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="text-sm font-bold">{EUR.format(tx.amountCents / 100)}</div>
+          <StatusIcon s={tx.status} />
+        </div>
       </div>
-      <div className="flex items-center gap-2">
-        <div className="text-sm font-bold">{EUR.format(tx.amountCents / 100)}</div>
-        <StatusIcon s={tx.status} />
-      </div>
-    </div>
+    </button>
   );
 }

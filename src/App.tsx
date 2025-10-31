@@ -4,11 +4,13 @@ import Hero from './components/layout/Hero';
 import HistoryHeader from './components/transactions/HistoryHeader';
 import SearchBar from './components/transactions/SearchBar';
 import WeekGroup from './components/transactions/WeekGroup';
+import TransactionModal from './components/transactions/TransactionModal';
 import data from './data/transactions.json';
 import type { Tx } from './components/transactions/TransactionCard';
 
 function App() {
   const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState<Tx | null>(null);
   const list = data as Tx[];
 
   const filtered = useMemo(() => {
@@ -35,8 +37,10 @@ function App() {
           </div>
         </section>
 
-        <WeekGroup items={filtered} />
+        <WeekGroup items={filtered} onOpen={setSelected} />
       </main>
+
+      <TransactionModal tx={selected} onClose={() => setSelected(null)} />
     </div>
   );
 }
