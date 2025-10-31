@@ -1,73 +1,114 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 💳 BankTrack — Transaction Search App
 
-Currently, two official plugins are available:
+**BankTrack** est une application web moderne permettant de **rechercher, filtrer et consulter** des transactions bancaires simulées à partir d’un fichier JSON.  
+Le projet met l’accent sur la **performance**, la **qualité du code** et une **expérience utilisateur fluide**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Preview](https://transactions-xxxx.vercel.app/preview.png) <!-- (optionnel: remplace par un vrai screenshot) -->
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Démo en ligne
 
-## Expanding the ESLint configuration
+👉 [Accéder à la version déployée sur Vercel](https://transactions-xxxx.vercel.app)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧠 Objectif du projet
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+L’objectif de ce projet est de **démontrer de bonnes pratiques front-end** :
+- Architecture claire et modulaire
+- Code maintenable en TypeScript
+- UI réactive, sobre et élégante
+- Gestion d’état simple mais efficace
+- Expérience utilisateur soignée (mode sombre, animation, feedback visuel)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Stack technique
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Outil | Utilisation |
+|--------|-------------|
+| ⚛️ **React + TypeScript + Vite** | Base de l’application et build ultra rapide |
+| 🎨 **Tailwind CSS** | Stylisation rapide et responsive |
+| 🌀 **Framer Motion** | Animations fluides et naturelles |
+| 💡 **Lucide React** | Pack d’icônes moderne et léger |
+| 🧹 **ESLint + Prettier** | Formatage et cohérence du code |
+| ☁️ **Vercel** | Déploiement et hébergement continu |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## ✨ Fonctionnalités principales
+
+### 🔍 Recherche dynamique
+- Filtrage instantané des transactions (label, montant, émetteur, destinataire…)
+- Recherche “debounced” pour de meilleures performances
+
+### 🧾 Liste de transactions
+- Transactions regroupées **par semaine**
+- Statut visuel : ✅ complété, 🕓 en attente, ❌ échoué
+- Affichage progressif grâce à un **infinite scroll**
+
+### 💬 Détails d’une transaction
+- Ouverture d’une **modale animée**
+- Détails complets (ID, label, date, émetteur, destinataire, montant)
+- Icônes et couleurs selon le statut
+
+### 🌙 Mode clair / sombre
+- Commutateur de thème avec icônes 🌞 / 🌙
+- Sauvegarde de la préférence dans `localStorage`
+- Adaptation automatique au thème système
+
+### ⚠️ Gestion d’erreurs et feedback utilisateur
+- Message stylé si la récupération échoue
+- Bouton “Retry” avec animations
+- Skeletons visuels pendant le chargement
+
+---
+
+## 🧩 Architecture du projet
+transactions-app/
+│
+├── src/
+│ ├── assets/ # Images / icônes si besoin
+│ ├── components/
+│ │ ├── layout/ # Header, Hero, etc.
+│ │ ├── transactions/ # Cartes, modales, search bar...
+│ │ └── ThemeToggle.tsx # Bouton de thème clair/sombre
+│ │
+│ ├── data/
+│ │ └── transactions.json # Données simulées
+│ │
+│ ├── hooks/ # Hooks custom (infinite scroll, debounce)
+│ ├── lib/ # Fonctions utilitaires (format date/montant)
+│ ├── App.tsx # Composant principal
+│ └── main.tsx # Point d’entrée
+│
+├── public/
+│ └── favicon.svg
+│
+├── package.json
+├── tailwind.config.js
+├── tsconfig.json
+└── vite.config.ts
+
+
+---
+
+## ⚙️ Installation et lancement local
+
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/Neytoooo/transactions-app.git
+cd transactions-app
+
+# 2. Installer les dépendances
+npm install
+
+# 3. Lancer en mode développement
+npm run dev
+
+# 4. Build pour la production
+npm run build
+npm run preview
